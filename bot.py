@@ -7,7 +7,6 @@ import pandas as pd
 import ta
 import requests
 import time
-from datetime import datetime
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = os.environ.get("CHANNEL_ID")
@@ -32,6 +31,10 @@ def get_decimals(price):
         return 5
     else:
         return 8
+
+def format_price(price, decimals):
+    """تنسيق السعر بدون صيغة علمية - مهم لكورنيكس"""
+    return f"{price:.{decimals}f}".rstrip('0').rstrip('.')
 
 def send_crypto_signal(coin_name, direction, entry1, entry2, leverage, tp1, tp2, tp3, sl):
     direction_text = "LONG" if direction.lower() == "long" else "SHORT"
@@ -70,7 +73,7 @@ def send_crypto_signal(coin_name, direction, entry1, entry2, leverage, tp1, tp2,
         print(f"Network error: {e}")
 
 def analyze_and_trade():
-    print("Starting scan (30m) with EMA + MACD strategies...")
+    print(f"Starting scan ({TIMEFRAME}) with EMA + MACD strategies...")
     exchange = ccxt.mexc()
 
     for symbol in SYMBOLS:
@@ -107,7 +110,14 @@ def analyze_and_trade():
                 tp2 = round(entry1 * 1.02, decimals)
                 tp3 = round(entry1 * 1.04, decimals)
                 sl = round(entry1 * 0.98, decimals)
-                send_crypto_signal(symbol, "LONG", str(entry1), str(entry2), "10", str(tp1), str(tp2), str(tp3), str(sl))
+
+                send_crypto_signal(
+                    symbol, "LONG",
+                    format_price(entry1, decimals), format_price(entry2, decimals),
+                    "10",
+                    format_price(tp1, decimals), format_price(tp2, decimals), format_price(tp3, decimals),
+                    format_price(sl, decimals)
+                )
                 time.sleep(2)
 
             elif ema_sell or macd_sell:
@@ -118,7 +128,14 @@ def analyze_and_trade():
                 tp2 = round(entry1 * 0.98, decimals)
                 tp3 = round(entry1 * 0.96, decimals)
                 sl = round(entry1 * 1.02, decimals)
-                send_crypto_signal(symbol, "SHORT", str(entry1), str(entry2), "10", str(tp1), str(tp2), str(tp3), str(sl))
+
+                send_crypto_signal(
+                    symbol, "SHORT",
+                    format_price(entry1, decimals), format_price(entry2, decimals),
+                    "10",
+                    format_price(tp1, decimals), format_price(tp2, decimals), format_price(tp3, decimals),
+                    format_price(sl, decimals)
+                )
                 time.sleep(2)
             else:
                 print(f"No signal for {symbol} currently.")
