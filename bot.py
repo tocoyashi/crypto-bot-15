@@ -12,7 +12,7 @@ from datetime import datetime
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = os.environ.get("CHANNEL_ID")
 
-TIMEFRAME = "30m"
+TIMEFRAME = "15m"
 
 SYMBOLS = [
     "BTC/USDT", "ETH/USDT", "BNB/USDT", "SOL/USDT", "XRP/USDT",
@@ -33,15 +33,16 @@ def get_decimals(price):
     else:
         return 8
 
-def send_crypto_signal(coin_name, direction, entry, leverage, tp1, tp2, tp3, sl):
+def send_crypto_signal(coin_name, direction, entry1, entry2, leverage, tp1, tp2, tp3, sl):
     direction_text = "LONG" if direction.lower() == "long" else "SHORT"
 
     text = (
         f"<b>New Call on: Bybit Platform</b>\n"
-        f"<i>Time: {datetime.now().strftime('%Y-%m-%d %H:%M')}</i>\n"
+        f"<b>Timeframe:</b> <code>{TIMEFRAME}</code>\n"
         f"<b>Trade:</b> <code>{coin_name}</code>\n\n"
         f"<b>Direction:</b> <code>{direction_text}</code>\n"
-        f"<b>Entry:</b> <code>{entry}</code>\n"
+        f"<b>Entry 1:</b> <code>{entry1}</code>\n"
+        f"<b>Entry 2:</b> <code>{entry2}</code>\n"
         f"<b>Leverage:</b> <code>{leverage}x</code>\n\n"
         f"<b>Target 1 (TP1):</b> <code>{tp1}</code>\n"
         f"<b>Target 2 (TP2):</b> <code>{tp2}</code>\n"
@@ -100,22 +101,24 @@ def analyze_and_trade():
 
             if ema_buy or macd_buy:
                 print(f"BUY SIGNAL on {symbol}!")
-                entry = round(current_close, decimals)
-                tp1 = round(entry * 1.0065, decimals)
-                tp2 = round(entry * 1.02, decimals)
-                tp3 = round(entry * 1.04, decimals)
-                sl = round(entry * 0.98, decimals)
-                send_crypto_signal(symbol, "LONG", str(entry), "10", str(tp1), str(tp2), str(tp3), str(sl))
+                entry1 = round(current_close, decimals)
+                entry2 = round(current_close * 0.991, decimals)
+                tp1 = round(entry1 * 1.0065, decimals)
+                tp2 = round(entry1 * 1.02, decimals)
+                tp3 = round(entry1 * 1.04, decimals)
+                sl = round(entry1 * 0.98, decimals)
+                send_crypto_signal(symbol, "LONG", str(entry1), str(entry2), "10", str(tp1), str(tp2), str(tp3), str(sl))
                 time.sleep(2)
 
             elif ema_sell or macd_sell:
                 print(f"SELL SIGNAL on {symbol}!")
-                entry = round(current_close, decimals)
-                tp1 = round(entry * 0.9935, decimals)
-                tp2 = round(entry * 0.98, decimals)
-                tp3 = round(entry * 0.96, decimals)
-                sl = round(entry * 1.02, decimals)
-                send_crypto_signal(symbol, "SHORT", str(entry), "10", str(tp1), str(tp2), str(tp3), str(sl))
+                entry1 = round(current_close, decimals)
+                entry2 = round(current_close * 1.009, decimals)
+                tp1 = round(entry1 * 0.9935, decimals)
+                tp2 = round(entry1 * 0.98, decimals)
+                tp3 = round(entry1 * 0.96, decimals)
+                sl = round(entry1 * 1.02, decimals)
+                send_crypto_signal(symbol, "SHORT", str(entry1), str(entry2), "10", str(tp1), str(tp2), str(tp3), str(sl))
                 time.sleep(2)
             else:
                 print(f"No signal for {symbol} currently.")
