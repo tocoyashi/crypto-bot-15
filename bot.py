@@ -33,22 +33,24 @@ def get_decimals(price):
     else:
         return 8
 
-def send_crypto_signal(coin_name, direction, entry, leverage, tp1, tp2, sl):
+def send_crypto_signal(coin_name, direction, entry, leverage, tp1, tp2, tp3, sl):
     direction_text = "LONG" if direction.lower() == "long" else "SHORT"
 
     text = (
-        f"<b>New Call on: Weex Platform</b>\n"
+        f"<b>New Call on: Bybit Platform</b>\n"
         f"<i>Time: {datetime.now().strftime('%Y-%m-%d %H:%M')}</i>\n"
         f"<b>Trade:</b> <code>{coin_name}</code>\n\n"
         f"<b>Direction:</b> <code>{direction_text}</code>\n"
         f"<b>Entry:</b> <code>{entry}</code>\n"
         f"<b>Leverage:</b> <code>{leverage}x</code>\n\n"
         f"<b>Target 1 (TP1):</b> <code>{tp1}</code>\n"
-        f"<b>Target 2 (TP2):</b> <code>{tp2}</code>\n\n"
+        f"<b>Target 2 (TP2):</b> <code>{tp2}</code>\n"
+        f"<b>Target 3 (TP3):</b> <code>{tp3}</code>\n\n"
         f"<b>Stop Loss (SL):</b> <code>{sl}</code>\n"
         f"-----------\n"
-        f"Trade on Weex - Win 10k 🔥\n"
-        f"www.weex.com/register?vipCode=0s0t4s"
+        f"Our signals are fully compatible with Bybit. Join and Get at least 20 USDT Instantly.\n\n"
+        f"Exclusive Bonus 🚀\n"
+        f"https://partner.bybit.com/b/Win_3900USD"
     )
 
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
@@ -101,8 +103,9 @@ def analyze_and_trade():
                 entry = round(current_close, decimals)
                 tp1 = round(entry * 1.0065, decimals)
                 tp2 = round(entry * 1.02, decimals)
+                tp3 = round(entry * 1.04, decimals)
                 sl = round(entry * 0.98, decimals)
-                send_crypto_signal(symbol, "LONG", str(entry), "10", str(tp1), str(tp2), str(sl))
+                send_crypto_signal(symbol, "LONG", str(entry), "10", str(tp1), str(tp2), str(tp3), str(sl))
                 time.sleep(2)
 
             elif ema_sell or macd_sell:
@@ -110,8 +113,9 @@ def analyze_and_trade():
                 entry = round(current_close, decimals)
                 tp1 = round(entry * 0.9935, decimals)
                 tp2 = round(entry * 0.98, decimals)
+                tp3 = round(entry * 0.96, decimals)
                 sl = round(entry * 1.02, decimals)
-                send_crypto_signal(symbol, "SHORT", str(entry), "10", str(tp1), str(tp2), str(sl))
+                send_crypto_signal(symbol, "SHORT", str(entry), "10", str(tp1), str(tp2), str(tp3), str(sl))
                 time.sleep(2)
             else:
                 print(f"No signal for {symbol} currently.")
