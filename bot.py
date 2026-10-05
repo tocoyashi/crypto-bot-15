@@ -114,7 +114,7 @@ def analyze_and_trade():
                 send_crypto_signal(
                     symbol, "LONG",
                     format_price(entry_low, decimals), format_price(entry_high, decimals),
-                    "10",
+                    "12",
                     format_price(tp1, decimals), format_price(tp2, decimals), format_price(tp3, decimals),
                     format_price(sl, decimals)
                 )
@@ -134,7 +134,7 @@ def analyze_and_trade():
                 send_crypto_signal(
                     symbol, "SHORT",
                     format_price(entry_low, decimals), format_price(entry_high, decimals),
-                    "10",
+                    "15",
                     format_price(tp1, decimals), format_price(tp2, decimals), format_price(tp3, decimals),
                     format_price(sl, decimals)
                 )
