@@ -107,8 +107,8 @@ def analyze_and_trade():
                 entry_high = round(current_close, decimals)
                 base = round(current_close, decimals)
                 tp1 = round(base * 1.0065, decimals)
-                tp2 = round(base * 1.02, decimals)
-                tp3 = round(base * 1.04, decimals)
+                tp2 = round(base * 1.025, decimals)
+                tp3 = round(base * 1.06, decimals)
                 sl = round(base * 0.97, decimals)
 
                 send_crypto_signal(
@@ -127,8 +127,8 @@ def analyze_and_trade():
                 entry_high = round(current_close * 1.009, decimals)
                 base = round(current_close, decimals)
                 tp1 = round(base * 0.9935, decimals)
-                tp2 = round(base * 0.98, decimals)
-                tp3 = round(base * 0.96, decimals)
+                tp2 = round(base * 0.975, decimals)
+                tp3 = round(base * 0.94, decimals)
                 sl = round(base * 1.03, decimals)
 
                 send_crypto_signal(
