@@ -43,7 +43,7 @@ def send_crypto_signal(coin_name, direction, entry_low, entry_high, leverage, tp
         f"<b>Exclusive on : BYBIT</b>\n"
         f"<b>Trade:</b> <code>{coin_name}</code>\n\n"
         f"<b>Direction:</b> <code>{direction_text}</code>\n"
-        f"<b>Entry 1:</b> <code>{entry_low} - {entry_high}</code>\n"
+        f"<b>Entry:</b> <code>{entry_low} - {entry_high}</code>\n"
         f"<b>Leverage:</b> <code>{leverage}x</code>\n\n"
         f"<b>Target 1 (TP1):</b> <code>{tp1}</code>\n"
         f"<b>Target 2 (TP2):</b> <code>{tp2}</code>\n"
